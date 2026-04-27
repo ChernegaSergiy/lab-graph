@@ -20,7 +20,15 @@ export function generateLatexTemplate({ points, title, xlabel, ylabel, smooth })
     )
     .join('\n');
 
-  const smoothOption = smooth ? 'smooth,\n            tension=0.5,' : '';
+  const plotOptions = [
+    smooth ? 'smooth' : '',
+    smooth ? 'tension=0.5' : '',
+    'thick',
+    'red',
+    'mark=*',
+    'mark options={fill=white, draw=red}',
+    'mark size=3.5pt'
+  ].filter(opt => opt !== '').join(',\n            ');
 
   return `\\documentclass{article}
 \\usepackage[a5paper, landscape, margin=1.5cm]{geometry}
@@ -55,13 +63,8 @@ export function generateLatexTemplate({ points, title, xlabel, ylabel, smooth })
             ymin=${formatCoord(limits.ymin - yPadding)}, ymax=${formatCoord(limits.ymax + yPadding)},
         ]
 
-        \\addplot+[
-            ${smoothOption}
-            mark=*,
-            mark options={fill=white, draw=red},
-            mark size=3.5pt,
-            thick,
-            red
+        \\addplot [
+            ${plotOptions}
         ] coordinates {
 ${coords}
         };
