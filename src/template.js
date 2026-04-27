@@ -1,6 +1,6 @@
 import { formatCoord, calculateAxisLimits } from './math.js';
 
-export function generateLatexTemplate({ points, title, xlabel, ylabel, legend, caption, pointLabelTemplate, lang, font, smooth }) {
+export function generateLatexTemplate({ points, title, xlabel, ylabel, legend, legendPos, caption, pointLabelTemplate, lang, font, smooth }) {
   const limits = calculateAxisLimits(points);
   const xPadding = (limits.xmax - limits.xmin) * 0.1;
   const yPadding = (limits.ymax - limits.ymin) * 0.1;
@@ -52,7 +52,7 @@ export function generateLatexTemplate({ points, title, xlabel, ylabel, legend, c
             grid=both,
             grid style={line width=.1pt, draw=gray!20},
             major grid style={line width=.2pt, draw=gray!50},
-            legend pos=north east,
+            legend pos=${legendPos},
             width=\\textwidth,
             height=0.85\\textheight,
             xmin=${formatCoord(limits.xmin - xPadding)}, xmax=${formatCoord(limits.xmax + xPadding)},
