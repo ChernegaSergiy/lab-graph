@@ -1,5 +1,6 @@
 # lab-graph
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?logo=opensourceinitiative)](LICENSE)
+
+[![License: CSSM Unlimited License v2.0](https://img.shields.io/badge/License-CSSM%20Unlimited%20License%20v2.0-blue.svg?logo=opensourceinitiative)](LICENSE)
 
 A CLI tool that generates publication-ready PDF graphs from CSV data via LaTeX/pgfplots. Designed for lab reports and scientific work.
 
