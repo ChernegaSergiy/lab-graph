@@ -49,13 +49,14 @@ const argv = yargs(hideBin(process.argv))
     default: '${xn} = {x}$',
     description: 'Point label template. Use {xn}, {x} and {y} as placeholders.',
   })
+  .option('labels', { type: 'boolean', default: true, description: 'Enable point labels (use --no-labels to disable)' })
   .option('lang',  { type: 'string', default: 'ukrainian', description: 'babel language' })
   .option('font',  { type: 'string', default: 'DejaVu Serif', description: 'Main font (fontspec name)' })
 
   .group(['input', 'output', 'latex-only'], 'Input / Output:')
   .group(['x', 'y', 'xfunc', 'yfunc'], 'Columns & Transforms:')
   .group(
-    ['smooth', 'fit', 'title', 'xlabel', 'ylabel', 'xunit', 'yunit', 'legend', 'legend-pos', 'caption', 'point-label', 'lang', 'font'], 
+    ['smooth', 'fit', 'title', 'xlabel', 'ylabel', 'xunit', 'yunit', 'legend', 'legend-pos', 'caption', 'point-label', 'labels', 'lang', 'font'], 
     'Appearance:'
   )
 
@@ -147,7 +148,7 @@ const latexCode = generateLatexTemplate({
   ylabel,
   legendPos,
   caption:            argv.caption || argv.title,
-  pointLabelTemplate: argv.pointLabel,
+  pointLabelTemplate: argv.labels ? argv.pointLabel : '',
   xName:              argv.x,
   xfunc:              argv.xfunc,
   yfunc:              argv.yfunc,
