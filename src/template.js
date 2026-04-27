@@ -58,7 +58,7 @@ export function generateLatexTemplate({
       'mark size=2pt',
     ].filter(Boolean).join(', ');
 
-    const labels = s.points.length <= 10
+    const labels = pointLabelTemplate
       ? s.points.map((p, pIdx) => {
           const xVal = String(p.originalX).replace('.', decimalSep);
           const yVal = String(p.originalY).replace('.', decimalSep);
