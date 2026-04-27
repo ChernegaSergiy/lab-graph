@@ -63,8 +63,10 @@ l,T
 Usage: lab-graph -i <csv> -x <col> -y <col> [options]
 
 Input / Output:
-  -i, --input   Path to CSV file                             [string] [required]
-  -o, --output  Output PDF path                  [string] [default: "graph.pdf"]
+  -i, --input       Path to CSV file                         [string] [required]
+  -o, --output      Output PDF path              [string] [default: "graph.pdf"]
+      --latex-only  Only generate .tex file, do not compile
+                                                      [boolean] [default: false]
 
 Columns & Transforms:
   -x           X column name                                 [string] [required]
@@ -81,6 +83,8 @@ Appearance:
       --title        Chart title                     [string] [default: "Graph"]
       --xlabel       X-axis label                        [string] [default: "X"]
       --ylabel       Y-axis label                        [string] [default: "Y"]
+      --xunit        Unit for X axis (e.g. cm)                          [string]
+      --yunit        Unit for Y axis (e.g. s)                           [string]
       --legend       Legend labels for each Y series                     [array]
       --legend-pos   Legend position (auto = smart placement)
   [string] [choices: "auto", "north east", "north west", "south east", "south we
