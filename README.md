@@ -106,6 +106,8 @@ Appearance:
       --caption      Figure caption (defaults to title)                 [string]
       --point-label  Point label template. Use {xn}, {x} and {y} as placeholders
                      .                        [string] [default: "${xn} = {x}$"]
+      --labels       Enable point labels (use --no-labels to disable)
+                                                       [boolean] [default: true]
       --lang         babel language              [string] [default: "ukrainian"]
       --font         Main font (fontspec name)[string] [default: "DejaVu Serif"]
 
