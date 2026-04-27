@@ -1,0 +1,17 @@
+{
+  "name": "lab-graph",
+  "version": "1.0.0",
+  "description": "CLI tool for generating LaTeX/PDF graphs from CSV data",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "generate": "node src/index.js",
+    "lint": "eslint src/"
+  },
+  "keywords": ["csv", "latex", "pgfplots", "chart", "graph", "cli"],
+  "license": "MIT",
+  "dependencies": {
+    "csv": "^6.3.0",
+    "yargs": "^17.7.0"
+  }
+}
