@@ -116,6 +116,18 @@ Options:
       --help     Show help                                             [boolean]
 ```
 
+## Professional Point Labels
+
+To get professional-looking labels with units where the variable is italic and the unit is upright:
+```bash
+--point-label '${xn} = {x}$ \text{cm}'
+```
+
+To disable point labels entirely (useful for graphs with many points):
+```bash
+--no-labels
+```
+
 ## Examples
 
 **Basic plot:**
