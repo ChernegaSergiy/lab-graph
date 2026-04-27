@@ -16,24 +16,17 @@ export function transformData(data, xKey, yKey, xFunc, yFunc) {
   const xTransform = transforms[xFunc] || transforms.id;
   const yTransform = transforms[yFunc] || transforms.id;
 
-  if (xFunc === 'diff' || yFunc === 'diff') {
-    const xDiff = xFunc === 'diff' ? transforms.diff(data, xKey) : data.map(row => Number(row[xKey]));
-    const yDiff = yFunc === 'diff' ? transforms.diff(data, yKey) : data.map(row => Number(row[yKey]));
-
-    return data.map((row, i) => ({
-      x: xDiff[i],
-      y: yDiff[i],
-      originalX: row[xKey],
-      originalY: row[yKey],
-    })).filter(point => !isNaN(point.x) && !isNaN(point.y));
-  }
-
   return data.map((row) => ({
     x: xTransform(row[xKey]),
     y: yTransform(row[yKey]),
     originalX: row[xKey],
     originalY: row[yKey],
-  }));
+  })).filter(p => !isNaN(p.x) && !isNaN(p.y));
+}
+
+export function getSeriesColor(index) {
+  const colors = ['red', 'blue', 'green', 'orange', 'purple', 'cyan', 'magenta'];
+  return colors[index % colors.length];
 }
 
 export function formatCoord(value, decimals = 4) {
