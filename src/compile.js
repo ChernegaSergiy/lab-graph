@@ -9,7 +9,8 @@ export function compileLatex(latexCode, outputPath) {
   fs.writeFileSync(texPath, latexCode);
 
   try {
-    execSync(`cd ${tempDir} && xelatex -interaction=nonstopmode graph.tex`, {
+    execSync(`xelatex -interaction=nonstopmode graph.tex`, {
+      cwd: tempDir,
       stdio: 'pipe',
     });
 
