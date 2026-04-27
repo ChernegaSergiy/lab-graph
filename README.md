@@ -63,32 +63,37 @@ l,T
 Usage: lab-graph -i <csv> -x <col> -y <col> [options]
 
 Input / Output:
-  -i, --input    Path to CSV file                          [string] [required]
-  -o, --output   Output PDF path               [string] [default: "graph.pdf"]
+  -i, --input   Path to CSV file                             [string] [required]
+  -o, --output  Output PDF path                  [string] [default: "graph.pdf"]
 
 Columns & Transforms:
-  -x             X column name                             [string] [required]
-  -y             Y column name(s)                           [array] [required]
-  --xfunc        Transform for X values
-                 [choices: id, ln, log10, sqrt, sq, diff]  [default: "id"]
-  --yfunc        Transform for Y values
-                 [choices: id, ln, log10, sqrt, sq, diff]  [default: "id"]
+  -x           X column name                                 [string] [required]
+  -y           Y column name(s)                               [array] [required]
+      --xfunc  Transform applied to X values
+   [string] [choices: "id", "ln", "log10", "sqrt", "sq", "diff"] [default: "id"]
+      --yfunc  Transform applied to Y values
+   [string] [choices: "id", "ln", "log10", "sqrt", "sq", "diff"] [default: "id"]
 
 Appearance:
-  --smooth       Draw smooth curves                  [boolean] [default: false]
-  --fit          Regression line: none | linear       [string] [default: "none"]
-  --title        Chart title                        [string] [default: "Graph"]
-  --xlabel       X-axis label                           [string] [default: "X"]
-  --ylabel       Y-axis label                           [string] [default: "Y"]
-  --legend       Legend labels for each Y series                       [array]
-  --legend-pos   Legend position (auto = smart placement)
-                 [choices: auto, north east, north west, south east,
-                  south west, outer north east]          [default: "auto"]
-  --caption      Figure caption (defaults to title)                   [string]
-  --point-label  Label template. Placeholders: {x}, {y}
-                 [string] [default: "$x = {x},\\; y = {y}$"]
-  --lang         babel language                  [string] [default: "ukrainian"]
-  --font         Main font (fontspec name)    [string] [default: "DejaVu Serif"]
+      --smooth       Draw smooth curves               [boolean] [default: false]
+      --fit          Add a regression line: none | linear
+                          [string] [choices: "none", "linear"] [default: "none"]
+      --title        Chart title                     [string] [default: "Graph"]
+      --xlabel       X-axis label                        [string] [default: "X"]
+      --ylabel       Y-axis label                        [string] [default: "Y"]
+      --legend       Legend labels for each Y series                     [array]
+      --legend-pos   Legend position (auto = smart placement)
+  [string] [choices: "auto", "north east", "north west", "south east", "south we
+                                      st", "outer north east"] [default: "auto"]
+      --caption      Figure caption (defaults to title)                 [string]
+      --point-label  Point label template. Use {x} and {y} as placeholders.
+                                      [string] [default: "$x = {x},\; y = {y}$"]
+      --lang         babel language              [string] [default: "ukrainian"]
+      --font         Main font (fontspec name)[string] [default: "DejaVu Serif"]
+
+Options:
+      --version  Show version number                                   [boolean]
+      --help     Show help                                             [boolean]
 ```
 
 ## Examples
