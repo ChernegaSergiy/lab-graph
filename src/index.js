@@ -6,6 +6,7 @@ import { checkXelatex, compileLatex } from './compile.js';
 import { generateLatexTemplate } from './template.js';
 
 const argv = yargs(hideBin(process.argv))
+  .usage('Usage: lab-graph -i <csv> -x <col> -y <col> [options]')
   .option('input',   { alias: 'i', type: 'string', demandOption: true, description: 'Path to CSV file' })
   .option('output',  { alias: 'o', type: 'string', default: 'graph.pdf', description: 'Output PDF path' })
   .option('latex-only', { type: 'boolean', default: false, description: 'Only generate .tex file, do not compile' })
@@ -15,13 +16,13 @@ const argv = yargs(hideBin(process.argv))
     type: 'string',
     choices: ['id', 'ln', 'log10', 'sqrt', 'sq', 'diff'],
     default: 'id',
-    description: 'Transform for X: id | ln | log10 | sqrt | sq | diff',
+    description: 'Transform applied to X values',
   })
   .option('yfunc',   {
     type: 'string',
     choices: ['id', 'ln', 'log10', 'sqrt', 'sq', 'diff'],
     default: 'id',
-    description: 'Transform for Y: id | ln | log10 | sqrt | sq | diff',
+    description: 'Transform applied to Y values',
   })
   .option('smooth',  { type: 'boolean', default: false, description: 'Draw smooth curves' })
   .option('fit',     {
@@ -51,10 +52,10 @@ const argv = yargs(hideBin(process.argv))
   .option('lang',  { type: 'string', default: 'ukrainian', description: 'babel language' })
   .option('font',  { type: 'string', default: 'DejaVu Serif', description: 'Main font (fontspec name)' })
 
-  .group(['input', 'output'], 'Input / Output:')
+  .group(['input', 'output', 'latex-only'], 'Input / Output:')
   .group(['x', 'y', 'xfunc', 'yfunc'], 'Columns & Transforms:')
   .group(
-    ['smooth', 'fit', 'title', 'xlabel', 'ylabel', 'legend', 'legend-pos', 'caption', 'point-label', 'lang', 'font'], 
+    ['smooth', 'fit', 'title', 'xlabel', 'ylabel', 'xunit', 'yunit', 'legend', 'legend-pos', 'caption', 'point-label', 'lang', 'font'], 
     'Appearance:'
   )
 
