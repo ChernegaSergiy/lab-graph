@@ -8,6 +8,7 @@ export function generateLatexTemplate({
   legendPos,
   caption,
   pointLabelTemplate,
+  xName,
   lang,
   font,
   smooth,
@@ -49,10 +50,11 @@ export function generateLatexTemplate({
           const xVal = String(p.originalX).replace('.', decimalSep);
           const yVal = String(p.originalY).replace('.', decimalSep);
           const labelText = pointLabelTemplate
+            .replace('{xn}', xName)
             .replace('{x}', xVal)
             .replace('{y}', yVal);
           const anchor = pIdx % 2 === 0 ? 'south west' : 'north east';
-          return `\\node[anchor=${anchor}, font=\\tiny, text=${s.color}] at (axis cs:${formatCoord(p.x)}, ${formatCoord(p.y)}) {${labelText}};`;
+          return `\\node[anchor=${anchor}, font=\\small, text=black] at (axis cs:${formatCoord(p.x)}, ${formatCoord(p.y)}) {${labelText}};`;
         }).join('\n        ')
       : '';
 

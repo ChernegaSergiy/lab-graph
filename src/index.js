@@ -45,8 +45,8 @@ const argv = yargs(hideBin(process.argv))
   .option('caption', { type: 'string', description: 'Figure caption (defaults to title)' })
   .option('point-label', {
     type: 'string',
-    default: '$x = {x},\\; y = {y}$',
-    description: 'Point label template. Use {x} and {y} as placeholders.',
+    default: '${xn} = {x}$',
+    description: 'Point label template. Use {xn}, {x} and {y} as placeholders.',
   })
   .option('lang',  { type: 'string', default: 'ukrainian', description: 'babel language' })
   .option('font',  { type: 'string', default: 'DejaVu Serif', description: 'Main font (fontspec name)' })
@@ -115,6 +115,7 @@ const latexCode = generateLatexTemplate({
   legendPos,
   caption:            argv.caption || argv.title,
   pointLabelTemplate: argv.pointLabel,
+  xName:              argv.x,
   lang:               argv.lang,
   font:               argv.font,
   smooth:             argv.smooth,
