@@ -25,8 +25,22 @@ A CLI tool that generates publication-ready PDF graphs from CSV data via LaTeX/p
 
 ## Prerequisites
 
-- Node.js ≥ 18
-- A TeX Live or MiKTeX installation with `xelatex` available in PATH
+- **Node.js** ≥ 18
+- **XeLaTeX** (part of TeX Live or MiKTeX)
+
+### System Dependencies
+
+The tool requires `xelatex` and several LaTeX packages (`pgfplots`, `amsmath`, `caption`, `fontspec`).
+
+#### Ubuntu / Debian
+```bash
+sudo apt update
+sudo apt install texlive-xetex texlive-fonts-recommended texlive-plain-generic texlive-latex-extra texlive-science
+```
+
+#### Windows
+1. Install [MiKTeX](https://miktex.org/download) or [TeX Live](https://www.tug.org/texlive/).
+2. MiKTeX will automatically prompt to install missing packages on the first run. Ensure you have internet access.
 
 ## Getting Started
 
