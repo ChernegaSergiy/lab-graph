@@ -104,6 +104,8 @@ node src/index.js -i examples/data.csv -x l -y T \
   --xlabel "$l$, cm" --ylabel "$T$, s" --title "Pendulum"
 ```
 
+![Example Graph](assets/graph.png)
+
 **Log-log transform with regression:**
 ```bash
 node src/index.js -i examples/data.csv -x l -y T \
