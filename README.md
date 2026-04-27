@@ -105,7 +105,7 @@ Options:
 **Basic plot:**
 ```bash
 node src/index.js -i examples/data.csv -x l -y T \
-  --xlabel "$l$, cm" --ylabel "$T$, s" --title "Pendulum"
+  --xunit cm --yunit s --title "Pendulum"
 ```
 
 ![Example Graph](assets/graph.png)
@@ -114,13 +114,13 @@ node src/index.js -i examples/data.csv -x l -y T \
 ```bash
 node src/index.js -i examples/data.csv -x l -y T \
   --xfunc ln --yfunc ln --fit linear \
-  --xlabel "$\ln l$" --ylabel "$\ln T$" --title "Pendulum (log-log)"
+  --xunit "" --yunit "" --title "Pendulum (log-log)"
 ```
 
 **Multiple series:**
 ```bash
 node src/index.js -i data.csv -x t -y v1 v2 v3 \
-  --legend "Run 1" "Run 2" "Run 3" --title "Velocity Comparison"
+  --xunit s --yunit m/s --legend "Run 1" "Run 2" "Run 3" --title "Velocity Comparison"
 ```
 
 ## Contributing
