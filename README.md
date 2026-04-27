@@ -133,7 +133,7 @@ node src/index.js -i examples/data.csv -x l -y T \
 
 **Multiple series:**
 ```bash
-node src/index.js -i data.csv -x t -y v1 v2 v3 \
+node src/index.js -i examples/data.csv -x t -y v1 v2 v3 \
   --xunit s --yunit m/s --legend "Run 1" "Run 2" "Run 3" --title "Velocity Comparison"
 ```
 
