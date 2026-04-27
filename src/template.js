@@ -12,8 +12,11 @@ export function generateLatexTemplate({ points, title, xlabel, ylabel, smooth })
 
   const labels = points
     .map(
-      (p) =>
-        `        \\node[anchor=south west, font=\\small] at (axis cs:${formatCoord(p.x)}, ${formatCoord(p.y)})\n            {$x = ${p.originalX}$, $y = ${p.originalY}$}`
+      (p) => {
+        const xVal = String(p.originalX).replace('.', '{,}');
+        const yVal = String(p.originalY).replace('.', '{,}');
+        return `        \\node[anchor=south west, font=\\small] at (axis cs:${formatCoord(p.x)}, ${formatCoord(p.y)})\n            {$x = ${xVal}$, $y = ${yVal}$};`;
+      }
     )
     .join('\n');
 
