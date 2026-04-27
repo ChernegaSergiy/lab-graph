@@ -1,22 +1,26 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { parseCSV } from './parser.js';
-import { transformData, getSmartLegendPos } from './math.js';
+import { parseCSV, getColumns } from './parser.js';
+import { transformData, getSmartLegendPos, getSeriesColor } from './math.js';
 import { generateLatexTemplate } from './template.js';
 import { compileLatex } from './compile.js';
 
 const argv = yargs(hideBin(process.argv))
   .option('input', { alias: 'i', type: 'string', demandOption: true })
   .option('x', { type: 'string', demandOption: true })
-  .option('y', { type: 'string', demandOption: true })
+  .option('y', { 
+    type: 'array', // Дозволяємо масив значень для Y
+    demandOption: true,
+    description: 'One or more Y columns'
+  })
   .option('xfunc', { type: 'string', default: 'id' })
   .option('yfunc', { type: 'string', default: 'id' })
   .option('smooth', { type: 'boolean', default: false })
   .option('title', { type: 'string', default: 'Graph' })
   .option('xlabel', { type: 'string', default: 'X' })
   .option('ylabel', { type: 'string', default: 'Y' })
-  .option('legend', { type: 'string' })
+  .option('legend', { type: 'array', description: 'Legend labels for each Y column' })
   .option('legend-pos', {
     type: 'string',
     default: 'auto',
@@ -30,20 +34,39 @@ const argv = yargs(hideBin(process.argv))
   .help().parseSync();
 
 const data = parseCSV(argv.input);
-const points = transformData(data, argv.x, argv.y, argv.xfunc, argv.yfunc);
+const columns = getColumns(data);
 
-// Визначаємо позицію легенди
+// Перевірка колонок
+if (!columns.includes(argv.x)) {
+  console.error(`Error: X Column '${argv.x}' not found.`);
+  process.exit(1);
+}
+
+const series = argv.y.map((yKey, index) => {
+  if (!columns.includes(yKey)) {
+    console.error(`Error: Y Column '${yKey}' not found.`);
+    process.exit(1);
+  }
+
+  return {
+    name: yKey,
+    legend: (argv.legend && argv.legend[index]) || yKey,
+    points: transformData(data, argv.x, yKey, argv.xfunc, argv.yfunc),
+    color: getSeriesColor(index)
+  };
+});
+
+// Для розумної легенди використовуємо першу серію або об'єднану (спростимо до першої)
 const legendPos = argv.legendPos === 'auto' 
-  ? getSmartLegendPos(points) 
+  ? getSmartLegendPos(series[0].points) 
   : argv.legendPos;
 
 const latexCode = generateLatexTemplate({
-  points,
+  series, // Передаємо масив серій замість одного масиву точок
   title: argv.title,
   xlabel: argv.xlabel,
   ylabel: argv.ylabel,
-  legend: argv.legend || argv.title,
-  legendPos: legendPos,
+  legendPos,
   caption: argv.caption || argv.title,
   pointLabelTemplate: argv.pointLabel,
   lang: argv.lang,
