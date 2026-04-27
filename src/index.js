@@ -1,32 +1,29 @@
-#!/usr/bin/env node
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { parseCSV, getColumns } from './parser.js';
-import { transformData, getSmartLegendPos, getSeriesColor } from './math.js';
+import { parseCSV, getColumns, transformData } from './parser.js';
+import { getSeriesColor, getSmartLegendPos, checkXelatex, compileLatex } from './index.js';
 import { generateLatexTemplate } from './template.js';
-import { checkXelatex, compileLatex } from './compile.js';
 
 const argv = yargs(hideBin(process.argv))
-  .scriptName('lab-graph')
-  .usage('Usage: $0 -i <csv> -x <col> -y <col> [options]')
-
-  // ── Input / output ───────────────────────────────────────────────────────────
-  .option('input',  { alias: 'i', type: 'string',  demandOption: true, description: 'Path to CSV file' })
-  .option('output', { alias: 'o', type: 'string',  default: 'graph.pdf', description: 'Output PDF path' })
-
-  // ── Columns & transforms ─────────────────────────────────────────────────────
-  .option('x',     { type: 'string',  demandOption: true, description: 'X column name' })
-  .option('y',     { type: 'array',   demandOption: true, description: 'Y column name(s)' })
-  .option('xfunc', { type: 'string',  default: 'id',
+  .option('input',   { alias: 'i', type: 'string', demandOption: true, description: 'Path to CSV file' })
+  .option('output',  { alias: 'o', type: 'string', default: 'graph.pdf', description: 'Output PDF path' })
+  .option('latex-only', { type: 'boolean', default: false, description: 'Only generate .tex file, do not compile' })
+  .option('x',       { type: 'string', demandOption: true, description: 'X column name' })
+  .option('y',       { type: 'array',  demandOption: true, description: 'Y column name(s)' })
+  .option('xfunc',   {
+    type: 'string',
     choices: ['id', 'ln', 'log10', 'sqrt', 'sq', 'diff'],
-    description: 'Transform applied to X values' })
-  .option('yfunc', { type: 'string',  default: 'id',
+    default: 'id',
+    description: 'Transform for X: id | ln | log10 | sqrt | sq | diff',
+  })
+  .option('yfunc',   {
+    type: 'string',
     choices: ['id', 'ln', 'log10', 'sqrt', 'sq', 'diff'],
-    description: 'Transform applied to Y values' })
-
-  // ── Appearance ───────────────────────────────────────────────────────────────
+    default: 'id',
+    description: 'Transform for Y: id | ln | log10 | sqrt | sq | diff',
+  })
   .option('smooth',  { type: 'boolean', default: false, description: 'Draw smooth curves' })
-  .option('fit', {
+  .option('fit',     {
     type: 'string',
     choices: ['none', 'linear'],
     default: 'none',
@@ -80,6 +77,18 @@ if (!columns.includes(argv.x)) {
   process.exit(1);
 }
 
+// ── LaTeX Transform Mapping ──────────────────────────────────────────────────
+const LATEX_TRANSFORMS = {
+  id:    (n) => n,
+  ln:    (n) => `\\ln ${n}`,
+  log10: (n) => `\\log_{10} ${n}`,
+  sqrt:  (n) => `\\sqrt{${n}}`,
+  sq:    (n) => `${n}^2`,
+  diff:  (n) => `\\Delta ${n}`,
+};
+
+const formatMath = (name, func) => (LATEX_TRANSFORMS[func] || ((n) => `\\${func} ${n}`))(name);
+
 // ── Build series ─────────────────────────────────────────────────────────────
 const series = argv.y.map((yKey, index) => {
   if (!columns.includes(yKey)) {
@@ -95,9 +104,7 @@ const series = argv.y.map((yKey, index) => {
 
   let autoLegend = yKey;
   if (argv.xfunc !== 'id' || argv.yfunc !== 'id') {
-    const yPart = argv.yfunc === 'id' ? yKey : `\\${argv.yfunc} ${yKey}`;
-    const xPart = argv.xfunc === 'id' ? argv.x : `\\${argv.xfunc} ${argv.x}`;
-    autoLegend = `$${yPart} = f(${xPart})$`;
+    autoLegend = `$${formatMath(yKey, argv.yfunc)} = f(${formatMath(argv.x, argv.xfunc)})$`;
   }
 
   return {
@@ -108,6 +115,10 @@ const series = argv.y.map((yKey, index) => {
   };
 });
 
+// ── Smart Axis Labels ────────────────────────────────────────────────────────
+const xlabel = argv.xlabel !== 'X' ? argv.xlabel : `$${formatMath(argv.x, argv.xfunc)}$`;
+const ylabel = argv.ylabel !== 'Y' ? argv.ylabel : `$${formatMath(series[0].name, argv.yfunc)}$`;
+
 // ── Legend position ───────────────────────────────────────────────────────────
 const legendPos = argv.legendPos === 'auto'
   ? getSmartLegendPos(series[0].points)
@@ -117,12 +128,14 @@ const legendPos = argv.legendPos === 'auto'
 const latexCode = generateLatexTemplate({
   series,
   title:              argv.title,
-  xlabel:             argv.xlabel,
-  ylabel:             argv.ylabel,
+  xlabel,
+  ylabel,
   legendPos,
   caption:            argv.caption || argv.title,
   pointLabelTemplate: argv.pointLabel,
   xName:              argv.x,
+  xfunc:              argv.xfunc,
+  yfunc:              argv.yfunc,
   lang:               argv.lang,
   font:               argv.font,
   smooth:             argv.smooth,

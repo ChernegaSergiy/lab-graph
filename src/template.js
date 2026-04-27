@@ -1,5 +1,16 @@
 import { formatCoord, calculateAxisLimits, linearRegression } from './math.js';
 
+const LATEX_TRANSFORMS = {
+  id:    (n) => n,
+  ln:    (n) => `\\ln ${n}`,
+  log10: (n) => `\\log_{10} ${n}`,
+  sqrt:  (n) => `\\sqrt{${n}}`,
+  sq:    (n) => `${n}^2`,
+  diff:  (n) => `\\Delta ${n}`,
+};
+
+const formatMath = (name, func) => (LATEX_TRANSFORMS[func] || ((n) => `\\${func} ${n}`))(name);
+
 export function generateLatexTemplate({
   series,
   title,
@@ -9,6 +20,8 @@ export function generateLatexTemplate({
   caption,
   pointLabelTemplate,
   xName,
+  xfunc,
+  yfunc,
   lang,
   font,
   smooth,
@@ -81,7 +94,10 @@ export function generateLatexTemplate({
       const sign         = reg.intercept >= 0 ? '+' : '-';
       const r2Str        = reg.r2.toFixed(4);
 
-      const eqLabel = `$y = ${slopeStr}x ${sign} ${interceptStr},\\; R^2 = ${r2Str}$`;
+      const xEq = formatMath(xName, xfunc);
+      const yEq = formatMath(s.name, yfunc);
+
+      const eqLabel = `$${yEq} = ${slopeStr}${xEq} ${sign} ${interceptStr},\\; R^2 = ${r2Str}$`;
 
       return `
         \\addplot [dashed, thick, ${s.color}, opacity=0.7] coordinates {
