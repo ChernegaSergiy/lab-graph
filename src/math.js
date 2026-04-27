@@ -1,5 +1,5 @@
 export const transforms = {
-  id: (x) => x,
+  id: (x) => Number(x),
   ln: (x) => Math.log(Number(x)),
   log10: (x) => Math.log10(Number(x)),
   sqrt: (x) => Math.sqrt(Number(x)),
