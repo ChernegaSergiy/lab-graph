@@ -33,6 +33,8 @@ const argv = yargs(hideBin(process.argv))
   .option('title',   { type: 'string', default: 'Graph', description: 'Chart title' })
   .option('xlabel',  { type: 'string', default: 'X',     description: 'X-axis label' })
   .option('ylabel',  { type: 'string', default: 'Y',     description: 'Y-axis label' })
+  .option('xunit',   { type: 'string', description: 'Unit for X axis (e.g. cm)' })
+  .option('yunit',   { type: 'string', description: 'Unit for Y axis (e.g. s)' })
   .option('legend',  { type: 'array',  description: 'Legend labels for each Y series' })
   .option('legend-pos', {
     type: 'string',
@@ -117,8 +119,19 @@ const series = argv.y.map((yKey, index) => {
 });
 
 // ── Smart Axis Labels ────────────────────────────────────────────────────────
-const xlabel = argv.xlabel !== 'X' ? argv.xlabel : `$${formatMath(argv.x, argv.xfunc)}$`;
-const ylabel = argv.ylabel !== 'Y' ? argv.ylabel : `$${formatMath(series[0].name, argv.yfunc)}$`;
+const formatLabel = (base, unit) => {
+  if (!unit) return base;
+  const unitPart = (unit.includes('$') || unit.includes('\\')) ? unit : `\\text{${unit}}`;
+  return `${base}, ${unitPart}`;
+};
+
+const xlabel = argv.xlabel !== 'X' 
+  ? argv.xlabel 
+  : `$${formatLabel(formatMath(argv.x, argv.xfunc), argv.xunit)}$`;
+
+const ylabel = argv.ylabel !== 'Y' 
+  ? argv.ylabel 
+  : `$${formatLabel(formatMath(series[0].name, argv.yfunc), argv.yunit)}$`;
 
 // ── Legend position ───────────────────────────────────────────────────────────
 const legendPos = argv.legendPos === 'auto'
