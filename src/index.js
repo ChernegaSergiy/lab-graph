@@ -51,6 +51,13 @@ const argv = yargs(hideBin(process.argv))
   .option('lang',  { type: 'string', default: 'ukrainian', description: 'babel language' })
   .option('font',  { type: 'string', default: 'DejaVu Serif', description: 'Main font (fontspec name)' })
 
+  .group(['input', 'output'], 'Input / Output:')
+  .group(['x', 'y', 'xfunc', 'yfunc'], 'Columns & Transforms:')
+  .group(
+    ['smooth', 'fit', 'title', 'xlabel', 'ylabel', 'legend', 'legend-pos', 'caption', 'point-label', 'lang', 'font'], 
+    'Appearance:'
+  )
+
   .version()
   .help()
   .parseSync();
