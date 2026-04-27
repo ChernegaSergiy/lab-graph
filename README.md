@@ -42,7 +42,7 @@ A CLI tool that generates publication-ready PDF graphs from CSV data via LaTeX/p
 
 3. Run against your CSV:
    ```bash
-   node src/index.js -i data.csv -x l -y T --title "Pendulum Period" --xlabel "l, cm" --ylabel "T, s" -o graph.pdf
+   node src/index.js -i examples/data.csv -x l -y T --title "Pendulum Period" --xlabel "l, cm" --ylabel "T, s" -o graph.pdf
    ```
 
 ## CSV Format
