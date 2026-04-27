@@ -32,7 +32,7 @@ A CLI tool that generates publication-ready PDF graphs from CSV data via LaTeX/p
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/lab-graph.git
+   git clone https://github.com/ChernegaSergiy/lab-graph.git
    ```
 
 2. Install dependencies:
