@@ -22,10 +22,15 @@ export function generateLatexTemplate({ points, title, xlabel, ylabel, smooth })
   return `\\documentclass{article}
 \\usepackage[a5paper, landscape, margin=1.5cm]{geometry}
 \\usepackage{pgfplots}
-\\usepackage[utf8]{inputenc}
-\\usepackage[ukrainian]{babel}
+\\usepackage{fontspec}
 \\usepackage{amsmath}
-\\pgfplotsset{compat=1.18}
+\\usepackage[ukrainian]{babel}
+
+\\setmainfont{DejaVu Serif}
+\\pgfplotsset{
+    compat=1.18,
+    every axis plot/.append style={line join=round, line cap=round}
+}
 \\pagestyle{empty}
 
 \\begin{document}
