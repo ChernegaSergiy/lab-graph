@@ -56,7 +56,7 @@ sudo apt install texlive-xetex texlive-fonts-recommended texlive-plain-generic t
 
 3. Run against your CSV:
    ```bash
-   node src/index.js -i examples/data.csv -x l -y T --title "Pendulum Period" --xlabel "$l$, cm" --ylabel "$T$, s" -o graph.pdf
+   node src/index.js -i examples/data.csv -x l -y T --xunit cm --yunit s --title "Pendulum Period" -o graph.pdf
    ```
 
 ## CSV Format
