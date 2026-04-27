@@ -93,9 +93,16 @@ const series = argv.y.map((yKey, index) => {
     process.exit(1);
   }
 
+  let autoLegend = yKey;
+  if (argv.xfunc !== 'id' || argv.yfunc !== 'id') {
+    const yPart = argv.yfunc === 'id' ? yKey : `\\${argv.yfunc} ${yKey}`;
+    const xPart = argv.xfunc === 'id' ? argv.x : `\\${argv.xfunc} ${argv.x}`;
+    autoLegend = `$${yPart} = f(${xPart})$`;
+  }
+
   return {
     name:   yKey,
-    legend: (argv.legend && argv.legend[index]) || yKey,
+    legend: (argv.legend && argv.legend[index]) || autoLegend,
     points,
     color:  getSeriesColor(index),
   };
