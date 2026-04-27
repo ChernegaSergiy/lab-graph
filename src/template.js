@@ -1,35 +1,43 @@
 import { formatCoord, calculateAxisLimits } from './math.js';
 
-export function generateLatexTemplate({ points, title, xlabel, ylabel, legend, legendPos, caption, pointLabelTemplate, lang, font, smooth }) {
-  const limits = calculateAxisLimits(points);
+export function generateLatexTemplate({ series, title, xlabel, ylabel, legendPos, caption, pointLabelTemplate, lang, font, smooth }) {
+  // Об'єднуємо всі точки для розрахунку меж осей
+  const allPoints = series.flatMap(s => s.points);
+  const limits = calculateAxisLimits(allPoints);
   const xPadding = (limits.xmax - limits.xmin) * 0.1;
   const yPadding = (limits.ymax - limits.ymin) * 0.1;
   const decimalSep = (lang === 'ukrainian' || lang === 'russian') ? '{,}' : '.';
 
-  const coords = points.map((p) => `(${formatCoord(p.x)}, ${formatCoord(p.y)})`).join(' ');
+  const plots = series.map((s, sIdx) => {
+    const coords = s.points.map((p) => `(${formatCoord(p.x)}, ${formatCoord(p.y)})`).join(' ');
+    
+    const plotOptions = [
+      smooth && 'smooth',
+      smooth && 'tension=0.5',
+      'thick',
+      s.color,
+      'mark=*',
+      `mark options={fill=white, draw=${s.color}}`,
+      'mark size=2pt'
+    ].filter(Boolean).join(', ');
 
-  const labels = points.length <= 15
-    ? points.map((p) => {
-        const xVal = String(p.originalX).replace('.', decimalSep);
-        const yVal = String(p.originalY).replace('.', decimalSep);
-        const labelText = pointLabelTemplate
-          .replace('{x}', xVal)
-          .replace('{y}', yVal);
-        return `\\node[anchor=south west, font=\\small] at (axis cs:${formatCoord(p.x)}, ${formatCoord(p.y)}) {${labelText}};`;
-      }).join('\n        ')
-    : '';
+    const labels = s.points.length <= 10
+      ? s.points.map((p, pIdx) => {
+          const xVal = String(p.originalX).replace('.', decimalSep);
+          const yVal = String(p.originalY).replace('.', decimalSep);
+          const labelText = pointLabelTemplate.replace('{x}', xVal).replace('{y}', yVal);
+          // Змінюємо положення підпису, щоб вони не накладалися (північ/південь)
+          const anchor = pIdx % 2 === 0 ? 'south west' : 'north east';
+          return `\\node[anchor=${anchor}, font=\\tiny, text=${s.color}] at (axis cs:${formatCoord(p.x)}, ${formatCoord(p.y)}) {${labelText}};`;
+        }).join('\n        ')
+      : '';
 
-  const plotOptions = [
-    smooth && 'smooth',
-    smooth && 'tension=0.5',
-    'thick',
-    'red',
-    'mark=*',
-    'mark options={fill=white, draw=red}',
-    'mark size=2pt'
-  ].filter(Boolean).join(', ');
-
-  const captionLine = caption ? `\\caption*{${caption}}` : '';
+    return `
+        \\addplot [${plotOptions}] coordinates { ${coords} };
+        \\addlegendentry{${s.legend}}
+        ${labels}
+    `;
+  }).join('\n');
 
   return `\\documentclass{article}
 \\usepackage[a5paper, landscape, margin=1.5cm]{geometry}
@@ -58,12 +66,10 @@ export function generateLatexTemplate({ points, title, xlabel, ylabel, legend, l
             xmin=${formatCoord(limits.xmin - xPadding)}, xmax=${formatCoord(limits.xmax + xPadding)},
             ymin=${formatCoord(limits.ymin - yPadding)}, ymax=${formatCoord(limits.ymax + yPadding)},
         ]
-        \\addplot [${plotOptions}] coordinates { ${coords} };
-        \\addlegendentry{${legend}}
-        ${labels}
+        ${plots}
         \\end{axis}
     \\end{tikzpicture}
-    ${captionLine}
+    ${caption ? `\\caption*{${caption}}` : ''}
 \\end{figure}
 \\end{document}`;
 }
