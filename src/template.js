@@ -42,6 +42,23 @@ export function generateLatexTemplate({
 
   const decimalSep = (lang === 'ukrainian' || lang === 'russian') ? '{,}' : '.';
 
+  // Helper to wrap LaTeX commands in math mode if not already wrapped
+  const ensureMath = (str) => {
+    if (!str) return str;
+    // If it contains \ but no $, wrap it. 
+    // This is naive but handles things like "\ln T" -> "$\ln T$"
+    // For mixed text like "Title \ln T", it's better if user provides $
+    if (str.includes('\\') && !str.includes('$')) {
+      return `$${str}$`;
+    }
+    return str;
+  };
+
+  const safeTitle = ensureMath(title).replace(/\.$/, '');
+  const safeXLabel = ensureMath(xlabel);
+  const safeYLabel = ensureMath(ylabel);
+  const safeCaption = ensureMath(caption);
+
   // ── Data series ──────────────────────────────────────────────────────────────
   const plots = series.map((s) => {
     const coords = s.points
