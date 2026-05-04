@@ -133,15 +133,16 @@ export function generateLatexTemplate({
 \\usepackage[${lang}]{babel}
 \\setmainfont{${font}}
 \\pgfplotsset{compat=1.18, every axis plot/.append style={line join=round, line cap=round}}
+\\addto\\captionsukrainian{\\renewcommand{\\figurename}{Рис.}}
 \\pagestyle{empty}
 \\begin{document}
 \\begin{figure}[htbp]
     \\centering
     \\begin{tikzpicture}
         \\begin{axis}[
-            title={${title}},
-            xlabel={${xlabel}},
-            ylabel={${ylabel}},
+            title={${safeTitle}},
+            xlabel={${safeXLabel}},
+            ylabel={${safeYLabel}},
             grid=both,
             grid style={line width=.1pt, draw=gray!20},
             major grid style={line width=.2pt, draw=gray!50},
@@ -156,7 +157,7 @@ export function generateLatexTemplate({
         ${regressionPlots}
         \\end{axis}
     \\end{tikzpicture}
-    ${caption ? `\\caption*{${caption}}` : ''}
+    ${safeCaption ? `\\caption{${safeCaption}}` : ''}
 \\end{figure}
 \\end{document}`;
 }
