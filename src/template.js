@@ -133,7 +133,6 @@ export function generateLatexTemplate({
 \\usepackage[${lang}]{babel}
 \\setmainfont{${font}}
 \\pgfplotsset{compat=1.18, every axis plot/.append style={line join=round, line cap=round}}
-\\addto\\captionsukrainian{\\renewcommand{\\figurename}{Рис.}}
 \\pagestyle{empty}
 \\begin{document}
 \\begin{figure}[htbp]
