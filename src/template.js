@@ -42,22 +42,7 @@ export function generateLatexTemplate({
 
   const decimalSep = (lang === 'ukrainian' || lang === 'russian') ? '{,}' : '.';
 
-  // Helper to wrap LaTeX commands in math mode if not already wrapped
-  const ensureMath = (str) => {
-    if (!str) return str;
-    if (str.includes('\\') && !str.includes('$')) {
-      return `$${str}$`;
-    }
-    return str;
-  };
-
-  const safeTitle = ensureMath(title).replace(/\.$/, '');
-  const safeXLabel = ensureMath(xlabel);
-  const safeYLabel = ensureMath(ylabel);
-  // For caption, we NEVER wrap the whole thing in $, 
-  // because it might contain commands like \ln that should be handled individually
-  // or the user should provide $ in the string.
-  const safeCaption = caption;
+  const cleanTitle = title ? title.replace(/\.$/, '') : '';
 
   // ── Data series ──────────────────────────────────────────────────────────────
   const plots = series.map((s) => {
@@ -139,9 +124,9 @@ export function generateLatexTemplate({
     \\centering
     \\begin{tikzpicture}
         \\begin{axis}[
-            title={${safeTitle}},
-            xlabel={${safeXLabel}},
-            ylabel={${safeYLabel}},
+            title={${cleanTitle}},
+            xlabel={${xlabel}},
+            ylabel={${ylabel}},
             grid=both,
             grid style={line width=.1pt, draw=gray!20},
             major grid style={line width=.2pt, draw=gray!50},
@@ -156,7 +141,7 @@ export function generateLatexTemplate({
         ${regressionPlots}
         \\end{axis}
     \\end{tikzpicture}
-    ${safeCaption ? `\\caption{${safeCaption}}` : ''}
+    ${caption ? `\\caption{${caption}}` : ''}
 \\end{figure}
 \\end{document}`;
 }
