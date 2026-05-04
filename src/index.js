@@ -147,7 +147,7 @@ const latexCode = generateLatexTemplate({
   xlabel,
   ylabel,
   legendPos,
-  caption:            argv.caption || argv.title,
+  caption:            argv.caption,
   pointLabelTemplate: argv.labels ? argv.pointLabel : '',
   xName:              argv.x,
   xfunc:              argv.xfunc,
@@ -159,10 +159,20 @@ const latexCode = generateLatexTemplate({
 });
 
 // ── Output ────────────────────────────────────────────────────────────────────
-try {
-  compileLatex(latexCode, argv.output);
-  console.log(`PDF saved to: ${argv.output}`);
-} catch (err) {
-  console.error(err.message);
-  process.exit(1);
+if (argv.latexOnly) {
+  const texOutput = argv.output.endsWith('.pdf') 
+    ? argv.output.replace(/\.pdf$/, '.tex') 
+    : argv.output + '.tex';
+  import('fs').then(fs => {
+    fs.writeFileSync(texOutput, latexCode, 'utf-8');
+    console.log(`LaTeX source saved to: ${texOutput}`);
+  });
+} else {
+  try {
+    compileLatex(latexCode, argv.output);
+    console.log(`PDF saved to: ${argv.output}`);
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 }
