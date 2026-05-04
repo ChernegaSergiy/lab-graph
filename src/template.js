@@ -45,9 +45,6 @@ export function generateLatexTemplate({
   // Helper to wrap LaTeX commands in math mode if not already wrapped
   const ensureMath = (str) => {
     if (!str) return str;
-    // If it contains \ but no $, wrap it. 
-    // This is naive but handles things like "\ln T" -> "$\ln T$"
-    // For mixed text like "Title \ln T", it's better if user provides $
     if (str.includes('\\') && !str.includes('$')) {
       return `$${str}$`;
     }
@@ -57,7 +54,10 @@ export function generateLatexTemplate({
   const safeTitle = ensureMath(title).replace(/\.$/, '');
   const safeXLabel = ensureMath(xlabel);
   const safeYLabel = ensureMath(ylabel);
-  const safeCaption = ensureMath(caption);
+  // For caption, we NEVER wrap the whole thing in $, 
+  // because it might contain commands like \ln that should be handled individually
+  // or the user should provide $ in the string.
+  const safeCaption = caption;
 
   // ── Data series ──────────────────────────────────────────────────────────────
   const plots = series.map((s) => {
