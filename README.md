@@ -38,6 +38,11 @@ sudo apt update
 sudo apt install texlive-xetex texlive-fonts-recommended texlive-plain-generic texlive-latex-extra texlive-science
 ```
 
+#### Fedora
+```bash
+sudo dnf install texlive-xetex texlive-pgfplots texlive-amsmath texlive-caption texlive-fontspec texlive-babel-ukrainian texlive-dejavu
+```
+
 #### Windows
 1. Install [MiKTeX](https://miktex.org/download) or [TeX Live](https://www.tug.org/texlive/).
 2. MiKTeX will automatically prompt to install missing packages on the first run. Ensure you have internet access.
