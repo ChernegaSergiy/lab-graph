@@ -19,7 +19,7 @@
   "author": "Serhii Cherneha",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "csv": "^6.6.0",
+    "csv": "^6.6.1",
     "yargs": "^18.0.0"
   }
 }
