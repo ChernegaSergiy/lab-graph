@@ -21,5 +21,9 @@
   "dependencies": {
     "csv": "^6.6.3",
     "yargs": "^18.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.8.1",
+    "eslint-plugin-es": "^4.1.0"
   }
 }
