@@ -155,6 +155,13 @@ node src/index.js -i examples/data.csv -x l -y T \
   --xunit "" --yunit "" --title "Pendulum (log-log)"
 ```
 
+**Sparse plot (decaying signal):**
+```bash
+node src/index.js -i examples/data.csv -x t -y v \
+  --sparse --max-points 20 --smooth \
+  --xunit s --yunit m/s --title "Decay (sparse)"
+```
+
 **Multiple series:**
 ```bash
 node src/index.js -i examples/data.csv -x t -y v1 v2 v3 \
