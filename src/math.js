@@ -94,6 +94,43 @@ export function autoDecimals(points) {
   return dec;
 }
 
+export function adaptiveDensity(points, maxPoints = 30) {
+  if (points.length <= maxPoints) return points;
+
+  const sorted = [...points].sort((a, b) => a.x - b.x);
+  const xMin = sorted[0].x;
+  const xMax = sorted[sorted.length - 1].x;
+  const xRange = xMax - xMin || 1;
+
+  const activity = sorted.map((p, i) => {
+    if (i === 0 || i === sorted.length - 1) return Infinity;
+    const dy = Math.abs(sorted[i + 1].y - sorted[i - 1].y);
+    const dx = sorted[i + 1].x - sorted[i - 1].x;
+    return dy / (dx || 1);
+  });
+
+  const maxActivity = Math.max(...activity.filter(a => isFinite(a))) || 1;
+
+  const result = [sorted[0]];
+  let lastIdx = 0;
+  let remaining = maxPoints - 2;
+
+  for (let i = 1; i < sorted.length - 1 && remaining > 0; i++) {
+    const xGap = sorted[i].x - sorted[lastIdx].x;
+    const normActivity = activity[i] / maxActivity;
+    const minGap = (xRange / maxPoints) * (0.3 + 0.7 * (1 - normActivity));
+
+    if (xGap >= minGap) {
+      result.push(sorted[i]);
+      lastIdx = i;
+      remaining--;
+    }
+  }
+
+  result.push(sorted[sorted.length - 1]);
+  return result;
+}
+
 export function calculateAxisLimits(points) {
   if (!points || points.length === 0) {
     return { xmin: 0, xmax: 1, ymin: 0, ymax: 1 };
