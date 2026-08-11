@@ -62,15 +62,15 @@ export function generateLatexTemplate({
 
     const labels = pointLabelTemplate
       ? s.points.map((p, pIdx) => {
-          const xVal = String(p.originalX).replace('.', decimalSep);
-          const yVal = String(p.originalY).replace('.', decimalSep);
-          const labelText = pointLabelTemplate
-            .replace('{xn}', xName)
-            .replace('{x}', xVal)
-            .replace('{y}', yVal);
-          const anchor = pIdx % 2 === 0 ? 'south west' : 'north east';
-          return `\\node[anchor=${anchor}, font=\\small, text=black] at (axis cs:${formatCoord(p.x)}, ${formatCoord(p.y)}) {${labelText}};`;
-        }).join('\n        ')
+        const xVal = String(p.originalX).replace('.', decimalSep);
+        const yVal = String(p.originalY).replace('.', decimalSep);
+        const labelText = pointLabelTemplate
+          .replace('{xn}', xName)
+          .replace('{x}', xVal)
+          .replace('{y}', yVal);
+        const anchor = pIdx % 2 === 0 ? 'south west' : 'north east';
+        return `\\node[anchor=${anchor}, font=\\small, text=black] at (axis cs:${formatCoord(p.x)}, ${formatCoord(p.y)}) {${labelText}};`;
+      }).join('\n        ')
       : '';
 
     return `
