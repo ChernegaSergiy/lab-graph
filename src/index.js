@@ -119,7 +119,7 @@ const series = argv.y.map((yKey, index) => {
   return {
     name:   yKey,
     legend: (argv.legend && argv.legend[index]) || autoLegend,
-    points,
+    points: finalPoints,
     color:  getSeriesColor(index),
   };
 });
