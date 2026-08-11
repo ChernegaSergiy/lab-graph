@@ -25,6 +25,8 @@ const argv = yargs(hideBin(process.argv))
     description: 'Transform applied to Y values',
   })
   .option('smooth',  { type: 'boolean', default: false, description: 'Draw smooth curves' })
+  .option('sparse',  { type: 'boolean', default: false, description: 'Reduce point density for sparse plots' })
+  .option('max-points', { type: 'number', default: 30, description: 'Maximum points per series when --sparse is active' })
   .option('fit',     {
     type: 'string',
     choices: ['none', 'linear'],
