@@ -109,6 +109,8 @@ const series = argv.y.map((yKey, index) => {
     process.exit(1);
   }
 
+  const finalPoints = argv.sparse ? adaptiveDensity(points, argv.maxPoints) : points;
+
   let autoLegend = yKey;
   if (argv.xfunc !== 'id' || argv.yfunc !== 'id') {
     autoLegend = `$${formatMath(yKey, argv.yfunc)} = f(${formatMath(argv.x, argv.xfunc)})$`;
