@@ -13,6 +13,7 @@ A CLI tool that generates publication-ready PDF graphs from CSV data via LaTeX/p
 - **Smart Legend Placement**: Automatically places the legend in the least-crowded quadrant.
 - **Point Labels**: Configurable per-point labels with `{xn}`, `{x}` and `{y}` placeholders.
 - **Smooth Curves**: Optional curve smoothing via pgfplots tension splines (`--smooth`).
+- **Sparse Graphs**: Adaptive point reduction for decaying signals (`--sparse`), keeping fewer points in flat regions and more where the curve changes rapidly.
 - **Localization**: babel language and fontspec font are fully configurable.
 - **PDF Output**: Compiles directly to PDF via XeLaTeX — no intermediate steps.
 
