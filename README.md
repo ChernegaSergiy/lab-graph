@@ -107,19 +107,23 @@ Appearance:
       --yunit        Unit for Y axis (e.g. s)                           [string]
       --legend       Legend labels for each Y series                     [array]
       --legend-pos   Legend position (auto = smart placement)
-  [string] [choices: "auto", "north east", "north west", "south east", "south we
-                                      st", "outer north east"] [default: "auto"]
+     [string] [choices: "auto", "north east", "north west", "south east", "south
+                                    west", "outer north east"] [default: "auto"]
       --caption      Figure caption (defaults to title)                 [string]
-      --point-label  Point label template. Use {xn}, {x} and {y} as placeholders
-                     .                        [string] [default: "${xn} = {x}$"]
+      --point-label  Point label template. Use {xn}, {x} and {y} as
+                     placeholders.            [string] [default: "${xn} = {x}$"]
       --labels       Enable point labels (use --no-labels to disable)
                                                        [boolean] [default: true]
       --lang         babel language              [string] [default: "ukrainian"]
       --font         Main font (fontspec name)[string] [default: "DejaVu Serif"]
 
 Options:
-      --version  Show version number                                   [boolean]
-      --help     Show help                                             [boolean]
+      --sparse      Reduce point density for sparse plots
+                                                      [boolean] [default: false]
+      --max-points  Maximum points per series when --sparse is active
+                                                          [number] [default: 30]
+      --version     Show version number                                [boolean]
+      --help        Show help                                          [boolean]
 ```
 
 ## Professional Point Labels
