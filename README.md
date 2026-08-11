@@ -9,7 +9,7 @@
 [![Lint](https://github.com/ChernegaSergiy/lab-graph/actions/workflows/lint.yml/badge.svg)](https://github.com/ChernegaSergiy/lab-graph/actions/workflows/lint.yml)
 [![License: CSSM Unlimited License v2.0](https://img.shields.io/badge/License-CSSM%20Unlimited%20License%20v2.0-blue.svg?logo=opensourceinitiative)](LICENSE)
 
-[Features](#features) · [Installation](#getting-started) · [Usage](#usage) · [Contributing](#contributing)
+[Features](#features) · [Getting Started](#getting-started) · [Usage](#usage) · [Contributing](#contributing)
 
 ---
 
