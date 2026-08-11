@@ -1,7 +1,7 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { parseCSV, getColumns } from './parser.js';
-import { transformData, getSeriesColor, getSmartLegendPos } from './math.js';
+import { transformData, getSeriesColor, getSmartLegendPos, adaptiveDensity } from './math.js';
 import { checkXelatex, compileLatex } from './compile.js';
 import { generateLatexTemplate } from './template.js';
 
