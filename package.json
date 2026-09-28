@@ -20,7 +20,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "csv": "^6.6.3",
-    "yargs": "^18.1.0"
+    "yargs": "^18.2.0"
   },
   "devDependencies": {
     "eslint": "^10.11.0",
