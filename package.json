@@ -23,7 +23,7 @@
     "yargs": "^18.2.0"
   },
   "devDependencies": {
-    "eslint": "^10.11.0",
+    "eslint": "^10.12.0",
     "eslint-plugin-es": "^4.1.0"
   }
 }
